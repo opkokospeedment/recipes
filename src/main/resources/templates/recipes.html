@@ -6,7 +6,27 @@
     </head>
     <body>
         <h1>Recipes</h1>
-        <h2 th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</h2>
+        <p th:inline="text">Hello [[${#httpServletRequest.remoteUser}]]!</p>
+
+        <table>
+            <tr>
+                <th>name</th>
+                <th>rating</th>
+            </tr>
+            <tr th:each="r : ${recipes}">
+                <td th:text="${r.name}"/>
+                <td th:text="${r.rating}"/>
+            </tr>
+        </table>
+
+        <hr />
+        <h3>Add recipe</h3>
+        <form th:action="@{/rest/recipes}" method="post">
+            Name: <input type="text" name="name" />
+            Text: <input type="text" name="text" />
+            <input type="submit" value="Add" />
+        </form>
+        <hr />
         <form th:action="@{/logout}" method="post">
             <input type="submit" value="Sign Out"/>
         </form>

@@ -1,8 +1,10 @@
 package recipes;
 
 import org.springframework.stereotype.Component;
+import recipes.recipes.Recipes;
 import recipes.users.Users;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -32,8 +34,11 @@ public class RecipesManager {
                 .isPresent();
     }
 
-    public void storeRecipe(String name, String text) {
-        //Todo
+    public void addRecipe(String name, String text) {
+        Recipes.builder()
+                .setName(name)
+                .setText(text)
+                .persist();
     }
 
     public void rate(int recipeId, int rating) {
@@ -41,8 +46,18 @@ public class RecipesManager {
     }
 
     public List<Recipe> fetchRecipes() {
-        //Todo
-        return null;
+        Recipe recipe = new Recipe();
+        recipe.setName("ett");
+        recipe.setText("ettText");
+
+        Recipe recipe2 = new Recipe();
+        recipe2.setName("två");
+        recipe2.setText("tvåText");
+
+        ArrayList<Recipe> recipes = new ArrayList<>();
+        recipes.add(recipe);
+        recipes.add(recipe2);
+        return recipes;
     }
 
     public Recipe fetchRecipe(int recipeId) {
