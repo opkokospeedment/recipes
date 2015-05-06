@@ -13,7 +13,6 @@ import java.util.List;
  * Created by user on 2015-05-06.
  */
 @Controller
-@RequestMapping("/rest")
 public class RecipesController {
 
     @Autowired
@@ -34,7 +33,12 @@ public class RecipesController {
     )
     public String addRecipe(@RequestParam(value="name") String name, @RequestParam(value="text") String text) {
         recipesManager.addRecipe(name, text);
-        return "redirect:/recipes";
+        return "recipes";
+    }
+
+    @RequestMapping("/recipes")
+    public String getRecipes() {
+        return "recipes";
     }
 
     @ModelAttribute("recipes")
