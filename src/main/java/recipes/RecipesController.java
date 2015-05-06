@@ -2,10 +2,8 @@ package recipes;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.ui.Model;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -33,7 +31,7 @@ public class RecipesController {
     )
     public String addRecipe(@RequestParam(value="name") String name, @RequestParam(value="text") String text) {
         recipesManager.addRecipe(name, text);
-        return "recipes";
+        return "redirect:/recipes";
     }
 
     @RequestMapping("/recipes")
@@ -45,4 +43,11 @@ public class RecipesController {
     public List<Recipe> populateRecipes() {
         return recipesManager.fetchRecipes();
     }
+
+    @RequestMapping("/recipes/{recipeId}")
+    public String getRecipe(Model model, @PathVariable long recipeId) {
+        model.addAttribute("recipe", recipesManager.fetchRecipe(recipeId));
+        return "recipe";
+    }
+
 }

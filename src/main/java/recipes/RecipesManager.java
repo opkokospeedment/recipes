@@ -5,7 +5,9 @@ import recipes.recipes.Recipes;
 import recipes.users.Users;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collector;
 import java.util.stream.Collectors;
 
 /**
@@ -26,7 +28,7 @@ public class RecipesManager {
     public boolean login(String user, String password) {
         //Todo
         Users.stream()
-            .forEach(u-> System.out.println("u = " + u));
+            .forEach(u -> System.out.println("u = " + u));
         return Users.stream()
                 .filter(u -> u.getName().equals(user))
                 .filter(u -> u.getPassword().equals(password))
@@ -41,28 +43,30 @@ public class RecipesManager {
                 .persist();
     }
 
-    public void rate(int recipeId, int rating) {
+    public void rate(long userId, long recipeId, int rating) {
         //Todo
     }
 
     public List<Recipe> fetchRecipes() {
-        Recipe recipe = new Recipe();
-        recipe.setName("ett");
-        recipe.setText("ettText");
-
-        Recipe recipe2 = new Recipe();
-        recipe2.setName("två");
-        recipe2.setText("tvåText");
-
-        ArrayList<Recipe> recipes = new ArrayList<>();
-        recipes.add(recipe);
-        recipes.add(recipe2);
+        List<Recipe> recipes = new ArrayList<>();
+        Recipes.stream().forEach(r -> {
+            Recipe recipe = new Recipe();
+            recipe.setId(r.getId());
+            recipe.setName(r.getName());
+            recipe.setText(r.getText());
+            recipes.add(recipe);
+        });
         return recipes;
     }
 
-    public Recipe fetchRecipe(int recipeId) {
+    public Recipe fetchRecipe(long recipeId) {
         //Todo
-        return null;
+        Recipes rec = Recipes.stream().filter(r -> r.getId() == recipeId).findFirst().get();
+        Recipe recipe = new Recipe();
+        recipe.setId(rec.getId());
+        recipe.setName(rec.getName());
+        recipe.setText(rec.getText());
+        return recipe;
     }
 
 }
