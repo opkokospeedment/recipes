@@ -29,7 +29,7 @@ public class RecipesManager {
     public boolean login(String user, String password) {
         //Todo
         Users.stream()
-            .forEach(u -> System.out.println("u = " + u));
+                .forEach(u -> System.out.println("u = " + u));
         return Users.stream()
                 .filter(u -> u.getName().equals(user))
                 .filter(u -> u.getPassword().equals(password))
@@ -71,7 +71,19 @@ public class RecipesManager {
         recipe.setId(rec.getId());
         recipe.setName(rec.getName());
         recipe.setText(rec.getText());
+        recipe.setRating(getRating(recipeId));
         return recipe;
+    }
+
+    private int getRating(long recipeId) {
+        //Todo
+        Double rating = Ratings.stream()
+                .filter(r -> r.getRecipesId() == recipeId)
+                .mapToInt(Ratings::getRating)
+                .average()
+                .getAsDouble();
+
+        return rating.intValue();
     }
 
 }
