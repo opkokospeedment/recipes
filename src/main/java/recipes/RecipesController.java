@@ -53,7 +53,7 @@ public class RecipesController {
 
     @RequestMapping(value = "/recipes/{recipeId}", method = RequestMethod.POST)
     public String rate(Model model, @PathVariable long recipeId, @RequestParam(value = "rating") int rating) {
-        recipesManager.rate(0, recipeId, rating);
+        recipesManager.rate(1, recipeId, rating);
         recipesManager.fetchRecipe(recipeId);
         model.addAttribute("recipe", recipesManager.fetchRecipe(recipeId));
         return "recipe";

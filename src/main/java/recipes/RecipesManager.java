@@ -1,6 +1,7 @@
 package recipes;
 
 import org.springframework.stereotype.Component;
+import recipes.ratings.Ratings;
 import recipes.recipes.Recipes;
 import recipes.users.Users;
 
@@ -44,7 +45,11 @@ public class RecipesManager {
     }
 
     public void rate(long userId, long recipeId, int rating) {
-        //Todo
+        Ratings.builder()
+                .setRating(rating)
+                .setRecipesId(recipeId)
+                .setUsersId(userId)
+                .persist();
     }
 
     public List<Recipe> fetchRecipes() {
