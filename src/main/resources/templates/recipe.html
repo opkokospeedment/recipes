@@ -8,5 +8,15 @@
         <h1 th:text="${recipe.name}">Dummy recipe</h1>
         <p th:text="${recipe.text}">Dummy text</p>
         <p th:text="${recipe.rating}">0</p>
+        <hr/>
+
+        <form th:action="@{/recipes/{id}(id=${recipe.id})}" method="POST">
+            1<input type="radio" name="rating" VALUE="1"/>
+            2<input type="radio" name="rating" VALUE="2"/>
+            3<input type="radio" name="rating" VALUE="3"/>
+            4<input type="radio" name="rating" VALUE="4"/>
+            5<input type="radio" name="rating" VALUE="5"/>
+            <div><input type="submit" value="Rate"/></div>
+        </form>
     </body>
 </html>

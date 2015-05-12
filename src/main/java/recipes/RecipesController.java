@@ -5,6 +5,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import java.security.Principal;
 import java.util.List;
 
 /**
@@ -34,7 +35,7 @@ public class RecipesController {
         return "redirect:/recipes";
     }
 
-    @RequestMapping("/recipes")
+    @RequestMapping(value = "/recipes", method = RequestMethod.GET)
     public String getRecipes() {
         return "recipes";
     }
@@ -44,10 +45,20 @@ public class RecipesController {
         return recipesManager.fetchRecipes();
     }
 
-    @RequestMapping("/recipes/{recipeId}")
+    @RequestMapping(value = "/recipes/{recipeId}", method = RequestMethod.GET)
     public String getRecipe(Model model, @PathVariable long recipeId) {
         model.addAttribute("recipe", recipesManager.fetchRecipe(recipeId));
         return "recipe";
     }
+
+    @RequestMapping(value = "/recipes/{recipeId}", method = RequestMethod.POST)
+    public String rate(Model model, @PathVariable long recipeId, @RequestParam(value = "rating") int rating) {
+        recipesManager.rate(0, recipeId, rating);
+        recipesManager.fetchRecipe(recipeId);
+        model.addAttribute("recipe", recipesManager.fetchRecipe(recipeId));
+        return "recipe";
+    }
+
+
 
 }
