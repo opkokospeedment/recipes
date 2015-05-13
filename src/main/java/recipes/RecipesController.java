@@ -1,6 +1,8 @@
 package recipes;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -53,7 +55,9 @@ public class RecipesController {
 
     @RequestMapping(value = "/recipes/{recipeId}", method = RequestMethod.POST)
     public String rate(Model model, @PathVariable long recipeId, @RequestParam(value = "rating") int rating) {
-        recipesManager.rate(1, recipeId, rating);
+        String username = SecurityContextHolder.getContext().getAuthentication().getName();
+        long userId = recipesManager.getUserIdByUsername(username);
+        recipesManager.rate(userId, recipeId, rating);
         recipesManager.fetchRecipe(recipeId);
         model.addAttribute("recipe", recipesManager.fetchRecipe(recipeId));
         return "recipe";

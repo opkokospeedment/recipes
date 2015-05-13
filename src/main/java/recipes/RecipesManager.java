@@ -45,6 +45,16 @@ public class RecipesManager {
     }
 
     public void rate(long userId, long recipeId, int rating) {
+
+        boolean userRatedAlready = Ratings.stream()
+                .filter(r -> r.getRecipesId() == recipeId)
+                .filter(r -> r.getUsersId() == userId)
+                .findAny().isPresent();
+
+        if(userRatedAlready) {
+            System.out.println("WARN: User has already rated this recipe!");
+        }
+
         Ratings.builder()
                 .setRating(rating)
                 .setRecipesId(recipeId)
@@ -59,6 +69,7 @@ public class RecipesManager {
             recipe.setId(r.getId());
             recipe.setName(r.getName());
             recipe.setText(r.getText());
+            recipe.setRating(getRating(r.getId()));
             recipes.add(recipe);
         });
         return recipes;
@@ -81,9 +92,17 @@ public class RecipesManager {
                 .filter(r -> r.getRecipesId() == recipeId)
                 .mapToInt(Ratings::getRating)
                 .average()
-                .getAsDouble();
-
+                .orElse(0);
         return rating.intValue();
+    }
+
+    public long getUserIdByUsername(String username) {
+        //Todo
+        return Users.stream()
+                .filter(u -> u.getName().equals(username))
+                .mapToLong(Users::getId)
+                .findFirst()
+                .orElseThrow(() -> new IllegalArgumentException("User does not exist"));
     }
 
 }
