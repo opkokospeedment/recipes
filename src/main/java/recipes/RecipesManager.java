@@ -63,16 +63,14 @@ public class RecipesManager {
     }
 
     public List<Recipe> fetchRecipes() {
-        List<Recipe> recipes = new ArrayList<>();
-        Recipes.stream().forEach(r -> {
+        return Recipes.stream().map(r -> {
             Recipe recipe = new Recipe();
             recipe.setId(r.getId());
             recipe.setName(r.getName());
             recipe.setText(r.getText());
             recipe.setRating(getRating(r.getId()));
-            recipes.add(recipe);
-        });
-        return recipes;
+            return recipe;
+        }).collect(Collectors.toList());
     }
 
     public Recipe fetchRecipe(long recipeId) {
